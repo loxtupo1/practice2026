@@ -19,7 +19,7 @@ import './styles/App.css';
 import './styles/GameTheme.css';
 
 export default function App() {
-  return <AuthProvider><WishlistProvider><BrowserRouter><Routes><Route element={<Shell />}>
+  return <AuthProvider><WishlistProvider><BrowserRouter basename={import.meta.env.BASE_URL}><Routes><Route element={<Shell />}>
     <Route index element={<Catalog />} />
     <Route path="games/:id" element={<GameDetails />} />
     <Route path="explore" element={<Explore />} />
