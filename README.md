@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+# Картридж — каталог компьютерных игр
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Учебное React-приложение для поиска игр, просмотра цен и ведения личной игровой коллекции.
 
-## Available Scripts
+## Возможности
 
-In the project directory, you can run:
+- Каталог игр с поиском, фильтрами, сортировкой и переходом на страницу игры.
+- Страница предложений CheapShark с поиском, фильтром скидки, сортировкой, состояниями загрузки, пустого результата и повторной загрузкой после ошибки.
+- Регистрация, вход и выход через Firebase Authentication; состояние входа восстанавливается при перезагрузке.
+- Личная полка и список «Хочу сыграть», синхронизируемые с Cloud Firestore.
+- Создание, редактирование и удаление игр; административный каталог защищён ролью администратора.
+- Профиль пользователя, адаптивная вёрстка и переключение темы.
 
-### `npm start`
+## Требования и запуск
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Нужны Node.js 20.19 или новее и npm.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+npm install
+npm start
+```
 
-### `npm test`
+Vite откроет адрес разработки в терминале (обычно `http://localhost:5173`). Для production-сборки выполните `npm run build`, для локального просмотра сборки — `npm run preview`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Стек и структура
 
-### `npm run build`
+- React, функциональные компоненты и хуки.
+- Vite — локальный сервер и сборка.
+- React Router DOM — маршрутизация и защищённые разделы.
+- Firebase Authentication и Cloud Firestore — аккаунты, каталог и пользовательские данные.
+- CheapShark API — внешние игровые предложения и цены.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```text
+src/
+  components/  общие компоненты и оболочка сайта
+  context/     состояние авторизации и списка желаемого
+  data/        исходные данные каталога
+  pages/       страницы приложения
+  services/    работа с Firestore и внешним API
+  styles/      стили и темы
+  App.js       маршруты
+  firebase.js  подключение Firebase
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Маршруты
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Путь | Назначение | Доступ |
+| --- | --- | --- |
+| `/` | Главная и каталог игр | Открытый |
+| `/games/:id` | Подробная страница игры | Открытый |
+| `/explore` | Внешние скидки и предложения | Открытый |
+| `/login`, `/register` | Вход и регистрация | Открытый |
+| `/wishlist` | Список «Хочу сыграть» | Аккаунт |
+| `/profile` | Профиль и настройки пользователя | Аккаунт |
+| `/dashboard` | Личная полка | Аккаунт |
+| `/dashboard/new`, `/dashboard/edit/:id` | Управление своими играми | Аккаунт, владелец |
+| `/admin` | Управление общим каталогом | Администратор |
 
-### `npm run eject`
+## Firebase и права доступа
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Для работы аккаунтов и синхронизации настройте Firebase Authentication (провайдер Email/Password) и Cloud Firestore. Примените правила из `firestore.rules` в Firebase Console → Firestore Database → Rules. Администратор определяется документом `admins/{uid}` с полем `enabled: true`; назначьте роль через Firebase Console, используя UID пользователя из раздела Authentication. Подробные шаги описаны в [ADMIN_SETUP.md](ADMIN_SETUP.md).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Firebase Web config в `src/firebase.js` — клиентская конфигурация приложения. Не добавляйте в браузерный проект service account JSON, приватные ключи или другие серверные секреты. Ограничьте API key в настройках Google Cloud по доменам и используемым API.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Внешний API
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Страница `/explore` загружает предложения через публичный CheapShark Deals API. Внешний сервис может быть временно недоступен; интерфейс показывает ошибку и позволяет повторить запрос. Цены и наличие предложений могут изменяться на стороне магазина.
